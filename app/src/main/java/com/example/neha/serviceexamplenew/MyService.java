@@ -7,13 +7,32 @@ import android.os.IBinder;
 
 public class MyService extends Service {
 
+    public String stringRSA, stringRSG;
+
+    Boolean isCollecting = false;
+
+    public void BeginCollect()
+    {
+        if (!isCollecting) // Lock controls when already busy
+        {
+            isCollecting = true;
+            stringRSA = "RSA";
+            stringRSG = "RSG";
+        }
+    }
+
+    public void EndCollect()
+    {
+        if (isCollecting) // Lock controls when already busy
+        {
+            isCollecting = false;
+        }
+    }
 
     private IBinder mytempbinder = new myBinder();
 
     public MyService() {
     }
-
-
 
     public class myBinder extends Binder {
         MyService getService() {

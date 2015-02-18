@@ -17,7 +17,9 @@ import android.widget.ImageView;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private Button buttonCreate, buttonCollect, buttonDisplay;
-    private EditText text1, text2;
+    private EditText textRSA, textRSG;
+
+    MyService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +28,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         buttonCreate = (Button)findViewById(R.id.buttonCreate);
         buttonCollect = (Button)findViewById(R.id.buttonCollect);
         buttonDisplay = (Button)findViewById(R.id.buttonDisplay);
-        text1 = (EditText)findViewById(R.id.editText1);
-        text2 = (EditText)findViewById(R.id.editText2);
+        textRSA = (EditText)findViewById(R.id.textRSA);
+        textRSG = (EditText)findViewById(R.id.textRSG);
 
         buttonCreate.setOnClickListener(this);
         buttonCollect.setOnClickListener(this);
@@ -62,10 +64,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.buttonCreate:
+                if (service != null)
+                {
+                    service = new MyService();
+                }
+                else
+                {
+
+                }
                 break;
             case R.id.buttonCollect:
+                if (service != null)
+                {
+                    service.BeginCollect();
+                }
                 break;
             case R.id.buttonDisplay:
+                if (service != null)
+                {
+                    service.EndCollect();
+                    textRSA.setText(service.stringRSA);
+                    textRSG.setText(service.stringRSG);
+                }
                 break;
         }
     }
