@@ -1,40 +1,38 @@
 package com.example.neha.serviceexamplenew;
 
-import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.Bundle;
-import android.os.IBinder;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.ImageView;
 
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener{
-
-    Button myButtonSS, myButtonBS, myButtonComm;
-    private MyService serviceobj;
+    private Button buttonCreate, buttonCollect, buttonDisplay;
+    private EditText text1, text2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        buttonCreate = (Button)findViewById(R.id.buttonCreate);
+        buttonCollect = (Button)findViewById(R.id.buttonCollect);
+        buttonDisplay = (Button)findViewById(R.id.buttonDisplay);
+        text1 = (EditText)findViewById(R.id.editText1);
+        text2 = (EditText)findViewById(R.id.editText2);
 
-
-        myButtonSS = (Button)findViewById(R.id.buttonSS);
-        myButtonBS = (Button)findViewById(R.id.buttonBS);
-        myButtonComm = (Button) findViewById(R.id.buttonComm);
-
-        myButtonBS.setOnClickListener(this);
-        myButtonSS.setOnClickListener(this);
-        myButtonComm.setOnClickListener(this);
-
+        buttonCreate.setOnClickListener(this);
+        buttonCollect.setOnClickListener(this);
+        buttonDisplay.setOnClickListener(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,36 +58,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.buttonSS:
-                Intent myIntent = new Intent(this, MyIntentService.class);
-                startService(myIntent);
+        Intent myIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        switch (v.getId())
+        {
+            case R.id.buttonCreate:
                 break;
-            case R.id.buttonBS:
-                Intent myIntent2 = new Intent(this, MyService.class);
-
-                bindService(myIntent2,mConnection, Context.BIND_AUTO_CREATE);
+            case R.id.buttonCollect:
                 break;
-            case R.id.buttonComm:
-                String junkstring = serviceobj.sendJunk();
-                Toast.makeText(this, "String: "+junkstring, Toast.LENGTH_LONG).show();
+            case R.id.buttonDisplay:
                 break;
-
         }
-
     }
-
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MyService.myBinder binder = (MyService.myBinder) service;
-            serviceobj = binder.getService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
 }
